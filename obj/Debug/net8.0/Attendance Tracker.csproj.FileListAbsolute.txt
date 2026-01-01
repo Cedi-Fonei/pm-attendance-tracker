@@ -1,0 +1,28 @@
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Attendance Tracker.exe
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Attendance Tracker.deps.json
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Attendance Tracker.runtimeconfig.json
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Attendance Tracker.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Attendance Tracker.pdb
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\Attendance Tracker.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\Attendance Tracker.AssemblyInfoInputs.cache
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\Attendance Tracker.AssemblyInfo.cs
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\Attendance Tracker.csproj.CoreCompileInputs.cache
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\Attendance Tracker.dll
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\refint\Attendance Tracker.dll
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\Attendance Tracker.pdb
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\Attendance Tracker.genruntimeconfig.cache
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\ref\Attendance Tracker.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Discord.Net.Commands.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Discord.Net.Core.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Discord.Net.Interactions.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Discord.Net.Rest.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Discord.Net.Webhook.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Discord.Net.WebSocket.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\System.Interactive.Async.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\System.Linq.Async.dll
+C:\Users\cedin\source\repos\Attendance Tracker\bin\Debug\net8.0\System.Reactive.dll
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\Attendance Tracker.csproj.AssemblyReference.cache
+C:\Users\cedin\source\repos\Attendance Tracker\obj\Debug\net8.0\Attendan.8F91E0B1.Up2Date
