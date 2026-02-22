@@ -4,15 +4,6 @@ using Discord.WebSocket;
 
 namespace Attendance_Tracker
 {
-    /*
-     CURRENT HURDLE: Troubleshooting why the bot, as it is currently built, will not recognize message content.
-    It can recognize that a message has been sent, but it cannot parse what has been said (therefore, it cannot parse commands)
-
-    ? Is this a permissions issue?
-    ?? Is this some other setting I need to reconfigure correctly within the Discord Developer Portal?
-    ? Is this an error in how I set up the client in the code below?
-     */
-
     public class Program
     {
         private static DiscordSocketClient _client;
@@ -20,7 +11,14 @@ namespace Attendance_Tracker
 
         public static async Task Main()
         {
-            _client = new DiscordSocketClient();
+            var socketConfig = new DiscordSocketConfig
+            {
+                AlwaysDownloadUsers = true,
+                MessageCacheSize = 100,
+                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
+
+            };
+            _client = new DiscordSocketClient(socketConfig);
 
             _commands = new CommandService(new CommandServiceConfig
             {
@@ -44,7 +42,6 @@ namespace Attendance_Tracker
             await _commands.AddModuleAsync<RecordingModule>(null);
 
             _client.MessageReceived += HandleCommandAsync;
-            
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
 
@@ -57,24 +54,13 @@ namespace Attendance_Tracker
 
         private static async Task HandleCommandAsync(SocketMessage messageParam)
         {
-            Console.WriteLine($"I have heard something...[{messageParam.CleanContent}]. Channel is {messageParam.Channel}");
-
             // Don't process the command if it was a system message
             var message = messageParam as SocketUserMessage;
             if (message == null) return;
             
-            Console.WriteLine("It is a SockerUserMessage...");
-
             // Create a number to track where the prefix ends and the command begins
             int argPos = 0;
 
-            
-            if(!message.HasCharPrefix('!', ref argPos)){
-                Console.WriteLine("The message DOES NOT start with an !...");
-            }
-
-            // TROUBLESHOOTING FINDINGS - HandleCommandAsync returns without processing the test commands BECAUSE it thinks the message is always blank and thus message.HasCharPrefix('!', ref argPos) is always false
-            // Determine if the message is a command based on the prefix and make sure no bots trigger commands
             if (!(message.HasCharPrefix('!', ref argPos) ||
                 message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
@@ -107,19 +93,19 @@ namespace Attendance_Tracker
 
     public class TestModule : ModuleBase<SocketCommandContext>
     {
-        [Command("ping")]
+        [Command("ping")] //!ping
         [Summary("A test ping.")]
         public async Task PingAsync()
         {
             Console.WriteLine("Attempting to ping...");
-            await Context.Channel.SendMessageAsync("Pong!");
+            await Context.Channel.SendMessageAsync("Pong!"); //Success!!!
         }
     }
 
     [Group("record-attendance")]
     public class RecordingModule : ModuleBase<SocketCommandContext>
     {
-        [Command("start")]
+        [Command("start")] //!record-attendance start
         [Summary("!TBD! Starts tracking attendance for the current meeting.")]
         public async Task StartAsync()
         {
@@ -127,7 +113,7 @@ namespace Attendance_Tracker
             await Context.Channel.SendMessageAsync("This function is still TBD! No functionality yet!");
         }
 
-        [Command("stop")]
+        [Command("stop")] //!record-attendance stop
         [Summary("!TBD! Stops tracking attendance for the current meeting.")]
         public async Task EndAsync()
         {
