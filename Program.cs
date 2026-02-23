@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using Attendance_Tracker.Modules;
+using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 
@@ -16,7 +17,6 @@ namespace Attendance_Tracker
                 AlwaysDownloadUsers = true,
                 MessageCacheSize = 100,
                 GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
-
             };
             _client = new DiscordSocketClient(socketConfig);
 
@@ -61,6 +61,8 @@ namespace Attendance_Tracker
             // Create a number to track where the prefix ends and the command begins
             int argPos = 0;
 
+            // TODO - within this method somewhere, add a segment that logs the user for the current attendance session, if they weren't already and they are not a bot [and if a session is active]
+
             if (!(message.HasCharPrefix('!', ref argPos) ||
                 message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
                 message.Author.IsBot)
@@ -83,42 +85,6 @@ namespace Attendance_Tracker
         {
             Console.WriteLine(msg.ToString());
             return Task.CompletedTask;
-        }
-    }
-
-
-
-
-
-
-    public class TestModule : ModuleBase<SocketCommandContext>
-    {
-        [Command("ping")] //!ping
-        [Summary("A test ping.")]
-        public async Task PingAsync()
-        {
-            Console.WriteLine("Attempting to ping...");
-            await Context.Channel.SendMessageAsync("Pong!"); //Success!!!
-        }
-    }
-
-    [Group("record-attendance")]
-    public class RecordingModule : ModuleBase<SocketCommandContext>
-    {
-        [Command("start")] //!record-attendance start
-        [Summary("!TBD! Starts tracking attendance for the current meeting.")]
-        public async Task StartAsync()
-        {
-            Console.WriteLine("Attempting to START recording...");
-            await Context.Channel.SendMessageAsync("This function is still TBD! No functionality yet!");
-        }
-
-        [Command("stop")] //!record-attendance stop
-        [Summary("!TBD! Stops tracking attendance for the current meeting.")]
-        public async Task EndAsync()
-        {
-            Console.WriteLine("Attempting to STOP recording...");
-            await Context.Channel.SendMessageAsync("This function is still TBD! No functionality yet!");
         }
     }
 }
