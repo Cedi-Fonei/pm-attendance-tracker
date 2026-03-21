@@ -2,6 +2,7 @@
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using System;
 
 namespace Attendance_Tracker
 {
@@ -36,8 +37,10 @@ namespace Attendance_Tracker
 
             When handing off the bot for running in a real meeting, I'll also hand off the token file with some additional instructions.
              */
-            var token = File.ReadAllText("token.txt");
-            
+            var token = Environment.GetEnvironmentVariable("BOT_TOKEN");
+            if (token == null) {
+                File.ReadAllText("token.txt");
+            }
             await _commands.AddModuleAsync<TestModule>(null);
             await _commands.AddModuleAsync<RecordingModule>(null);
 
