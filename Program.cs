@@ -1,6 +1,6 @@
 ﻿using Attendance_Tracker.Modules;
 using Discord;
-using Discord.Commands;
+using Discord.Interactions;
 using Discord.WebSocket;
 using System;
 
@@ -9,42 +9,40 @@ namespace Attendance_Tracker
     public class Program
     {
         private static DiscordSocketClient _client;
-        private static CommandService _commands;
+        private static InteractionService _interactionService;
 
-        public static async Task Main()
-        {
-            var socketConfig = new DiscordSocketConfig
-            {
-                AlwaysDownloadUsers = true,
-                MessageCacheSize = 100,
-                GatewayIntents = GatewayIntents.AllUnprivileged | GatewayIntents.MessageContent
+        static Program() {
+            var socketConfig = new DiscordSocketConfig {
+                GatewayIntents = GatewayIntents.AllUnprivileged
             };
             _client = new DiscordSocketClient(socketConfig);
 
-            _commands = new CommandService(new CommandServiceConfig
-            {
-                LogLevel = LogSeverity.Info,
-                CaseSensitiveCommands = false,
-            });
+            var interactionServiceConfig = new InteractionServiceConfig {
+                LogLevel = LogSeverity.Debug,
+            };
+            _interactionService = new InteractionService(_client, interactionServiceConfig);
 
             _client.Log += Log;
-            _commands.Log += Log;
+            _interactionService.Log += Log;
+        }
 
-            /*
-             For security & simplicity purposes, I'm keeping the token for the bot in a local-only file.
-            This token is not included in the repo, and the bot will NOT login & start without it. This is an intentional security measure.
-            When developing & running locally, the token belongs in the "{project directory}\bin\Debug\net8.0" folder
-
-            When handing off the bot for running in a real meeting, I'll also hand off the token file with some additional instructions.
-             */
+        public static async Task Main()
+        {
+            // when running this bot in production, set the token via one of two ways
+            // either set the BOT_TOKEN environment variable on launch,
+            // or put the token in `token.txt` in the working directory
             var token = Environment.GetEnvironmentVariable("BOT_TOKEN");
             if (token == null) {
                 token = File.ReadAllText("token.txt");
             }
-            await _commands.AddModuleAsync<TestModule>(null);
-            await _commands.AddModuleAsync<RecordingModule>(null);
 
-            _client.MessageReceived += HandleCommandAsync;
+            await _interactionService.AddModuleAsync<TestModule>(null);
+            _client.Ready += async () => await _interactionService.RegisterCommandsGloballyAsync();
+            _client.InteractionCreated += async (x) => {
+                var ctx = new SocketInteractionContext(_client, x);
+                await _interactionService.ExecuteCommandAsync(ctx, null);
+            };
+
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
 
@@ -54,40 +52,11 @@ namespace Attendance_Tracker
             await Task.Delay(-1);
         }
 
-
-        private static async Task HandleCommandAsync(SocketMessage messageParam)
-        {
-            // Don't process the command if it was a system message
-            var message = messageParam as SocketUserMessage;
-            if (message == null) return;
-            
-            // Create a number to track where the prefix ends and the command begins
-            int argPos = 0;
-
-            // TODO - within this method somewhere, add a segment that logs the user for the current attendance session, if they weren't already and they are not a bot [and if a session is active]
-
-            if (!(message.HasCharPrefix('!', ref argPos) ||
-                message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
-                message.Author.IsBot)
-                return;
-
-            Console.WriteLine("I have received a message that starts with a ! symbol...");
-
-            // Create a WebSocket-based command context based on the message
-            var context = new SocketCommandContext(_client, message);
-
-            // Execute the command with the command context we just
-            // created, along with the service provider for precondition checks.
-            await _commands.ExecuteAsync(
-                context: context,
-                argPos: argPos,
-                services: null);
-        }
-
         private static Task Log(LogMessage msg)
         {
             Console.WriteLine(msg.ToString());
             return Task.CompletedTask;
         }
+
     }
 }
