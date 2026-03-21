@@ -39,7 +39,7 @@ namespace Attendance_Tracker
              */
             var token = Environment.GetEnvironmentVariable("BOT_TOKEN");
             if (token == null) {
-                File.ReadAllText("token.txt");
+                token = File.ReadAllText("token.txt");
             }
             await _commands.AddModuleAsync<TestModule>(null);
             await _commands.AddModuleAsync<RecordingModule>(null);
